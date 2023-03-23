@@ -16,9 +16,9 @@ class ChirpPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -28,9 +28,9 @@ class ChirpPolicy
      * @param  \App\Models\Chirp  $chirp
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Chirp $chirp)
+    public function view(User $user, Chirp $chirp): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -39,9 +39,9 @@ class ChirpPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -51,7 +51,7 @@ class ChirpPolicy
      * @param  \App\Models\Chirp  $chirp
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Chirp $chirp)
+    public function update(User $user, Chirp $chirp): bool
     {
         return $chirp->user()->is($user);
     }
@@ -63,9 +63,9 @@ class ChirpPolicy
      * @param  \App\Models\Chirp  $chirp
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Chirp $chirp)
+    public function delete(User $user, Chirp $chirp): bool
     {
-        //
+        return $chirp->user()->is($user);
     }
 
     /**
@@ -75,9 +75,9 @@ class ChirpPolicy
      * @param  \App\Models\Chirp  $chirp
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Chirp $chirp)
+    public function restore(User $user, Chirp $chirp): bool
     {
-        //
+        return $chirp->user()->is($user);
     }
 
     /**
@@ -87,8 +87,8 @@ class ChirpPolicy
      * @param  \App\Models\Chirp  $chirp
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Chirp $chirp)
+    public function forceDelete(User $user, Chirp $chirp): bool
     {
-        //
+        return $chirp->user()->is($user);
     }
 }

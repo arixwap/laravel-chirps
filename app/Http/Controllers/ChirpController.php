@@ -3,16 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Chirp;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class ChirpController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(): View
     {
         return view('chirps.index', [
             'chirps' => Chirp::with('user')->latest()->get(),
@@ -24,18 +26,18 @@ class ChirpController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): RedirectResponse
     {
-        //
+        return redirect(route('chirps.index'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'message' => 'required|string|max:255',
@@ -50,20 +52,20 @@ class ChirpController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Chirp  $chirp
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function show(Chirp $chirp)
+    public function show(Chirp $chirp): RedirectResponse
     {
-        //
+        return redirect(route('chirps.index'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Chirp  $chirp
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
-    public function edit(Chirp $chirp)
+    public function edit(Chirp $chirp): View
     {
         $this->authorize('update', $chirp);
 
@@ -77,9 +79,9 @@ class ChirpController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Chirp  $chirp
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Chirp $chirp)
+    public function update(Request $request, Chirp $chirp): RedirectResponse
     {
         $this->authorize('update', $chirp);
 
@@ -96,10 +98,14 @@ class ChirpController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Chirp  $chirp
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Chirp $chirp)
+    public function destroy(Chirp $chirp): RedirectResponse
     {
-        //
+        $this->authorize('delete', $chirp);
+
+        $chirp->delete();
+
+        return redirect(route('chirps.index'));
     }
 }
